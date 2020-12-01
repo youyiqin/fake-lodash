@@ -59,9 +59,23 @@ const _ = {
         .includes(i)
     })
   },
-  differenceBy(arr: any[], arr2: any[], iteratee: (Array<any> | Function | Object | string)): any[] {
-
-    return []
+  differenceBy(arr1: any[], arr2: any[], iteratee: Function): any[] {
+    const _arr1 = arr1.map(i => iteratee(i))
+    const _arr2 = arr2.map(i => iteratee(i))
+    return _arr1.map((e, index) => {
+      if (!_arr2.includes(e)) {
+        return arr1[index]
+      } else {
+        return undefined
+      }
+    }).filter(i => !!i)
+  },
+  differenceWith(arr: any[], values: any[][], comparator: Function): any[] {
+    const _values = values.reduce((prev: any[], curr: any[]) => prev.concat(curr), [])
+    return arr.filter(i => {
+      // 返回比较函数结果为true的部分
+      return _values.every(item => comparator(item, i))
+    })
   }
 }
 
@@ -69,6 +83,6 @@ assert.ok(arrEqual([1, 2], [2, 1]))
 assert.ok(arrEqual(_.compact([1, 2, 3, NaN, false, null, undefined, 0, 0n, '']), [1, 2, 3]))
 assert.ok(arrEqual(_.chunk([1, 2, 3, 4, 5], 2), [[1, 2], [3, 4], [5]]))
 assert(arrEqual(_.difference([1, 3, 9], [2, 4, 6, 1], [3]), [9]))
-
+assert(arrEqual(_.differenceBy([1.3, 2.2], [3.1, 2.4], (i: number) => ~i), [1.3]))
 
 export default _;
