@@ -1,0 +1,27 @@
+{
+  "name": "fake-lodash",
+  "version": "1.0.0",
+  "description": "使用不同语言实现部分`lodash`内的方法,其目的是为了熟悉`lodash`,以及提高语言的熟练度,开阔视野.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youyiqin/fake-lodash.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/youyiqin/fake-lodash/issues"
+  },
+  "homepage": "https://github.com/youyiqin/fake-lodash#readme",
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/node": "^14.14.10",
+    "typescript": "^4.1.2"
+  }
+}
