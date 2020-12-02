@@ -70,12 +70,8 @@ const _ = {
       }
     }).filter(i => !!i)
   },
-  differenceWith(arr: any[], values: any[][], comparator: Function): any[] {
-    const _values = values.reduce((prev: any[], curr: any[]) => prev.concat(curr), [])
-    return arr.filter(i => {
-      // 返回比较函数结果为true的部分
-      return _values.every(item => comparator(item, i))
-    })
+  drop(arr: any[], n = 1) {
+    return arr.slice(n <= 0 ? 0 : ~~n)
   }
 }
 
@@ -84,5 +80,7 @@ assert.ok(arrEqual(_.compact([1, 2, 3, NaN, false, null, undefined, 0, 0n, '']),
 assert.ok(arrEqual(_.chunk([1, 2, 3, 4, 5], 2), [[1, 2], [3, 4], [5]]))
 assert(arrEqual(_.difference([1, 3, 9], [2, 4, 6, 1], [3]), [9]))
 assert(arrEqual(_.differenceBy([1.3, 2.2], [3.1, 2.4], (i: number) => ~i), [1.3]))
+assert(arrEqual(_.drop([1, 2]), [2]))
+
 
 export default _;

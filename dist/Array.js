@@ -72,6 +72,9 @@ const _ = {
                 return undefined;
             }
         }).filter(i => !!i);
+    },
+    drop(arr, n = 1) {
+        return arr.slice(n <= 0 ? 0 : ~~n);
     }
 };
 assert_1.default.ok(arrEqual([1, 2], [2, 1]));
@@ -79,5 +82,6 @@ assert_1.default.ok(arrEqual(_.compact([1, 2, 3, NaN, false, null, undefined, 0,
 assert_1.default.ok(arrEqual(_.chunk([1, 2, 3, 4, 5], 2), [[1, 2], [3, 4], [5]]));
 assert_1.default(arrEqual(_.difference([1, 3, 9], [2, 4, 6, 1], [3]), [9]));
 assert_1.default(arrEqual(_.differenceBy([1.3, 2.2], [3.1, 2.4], (i) => ~i), [1.3]));
-assert_1.default(arrEqual(_.differenceBy([1.3, 2.2], [3.1, 2.4], (i) => ~i), [12.3]));
+console.log(_.drop([1, 2]));
+assert_1.default(arrEqual(_.drop([1, 2]), [2]));
 exports.default = _;
