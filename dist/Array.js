@@ -7,6 +7,7 @@ const assert_1 = __importDefault(require("assert"));
 const arrEqual = (arr1, arr2) => {
     const _arr1 = arr1.sort();
     const _arr2 = arr2.sort();
+    console.log('Compared:', _arr1, _arr2);
     return _arr1.every((item, index) => {
         if (Array.isArray(item)) {
             return arrEqual(item, _arr2[index]);
@@ -75,6 +76,12 @@ const _ = {
     },
     drop(arr, n = 1) {
         return arr.slice(n <= 0 ? 0 : ~~n);
+    },
+    dropRight(arr, n = 1) {
+        const _n = n <= 0 ? 0 : arr.length - n;
+        if (n >= arr.length)
+            return [];
+        return arr.slice(0, _n);
     }
 };
 assert_1.default.ok(arrEqual([1, 2], [2, 1]));
@@ -82,6 +89,7 @@ assert_1.default.ok(arrEqual(_.compact([1, 2, 3, NaN, false, null, undefined, 0,
 assert_1.default.ok(arrEqual(_.chunk([1, 2, 3, 4, 5], 2), [[1, 2], [3, 4], [5]]));
 assert_1.default(arrEqual(_.difference([1, 3, 9], [2, 4, 6, 1], [3]), [9]));
 assert_1.default(arrEqual(_.differenceBy([1.3, 2.2], [3.1, 2.4], (i) => ~i), [1.3]));
-console.log(_.drop([1, 2]));
 assert_1.default(arrEqual(_.drop([1, 2]), [2]));
+assert_1.default(arrEqual(_.dropRight([1, 2]), [1]));
+assert_1.default(arrEqual(_.dropRight([1, 2, 3, 4, 5, 6, 7, 8, 9], 6), [1, 2, 3]));
 exports.default = _;

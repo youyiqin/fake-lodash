@@ -5,6 +5,8 @@ const arrEqual = (arr1: _Arr, arr2: _Arr): boolean => {
   // 用默认排序算法排序,如果数组内容一致,则下标对应的内容可以进行相等性比较
   const _arr1 = arr1.sort()
   const _arr2 = arr2.sort()
+  console.log('Compared:', _arr1, _arr2);
+
   return _arr1.every((item, index) => {
     if (Array.isArray(item)) {
       return arrEqual(item as _Arr, _arr2[index] as _Arr)
@@ -72,6 +74,11 @@ const _ = {
   },
   drop(arr: any[], n = 1) {
     return arr.slice(n <= 0 ? 0 : ~~n)
+  },
+  dropRight(arr: any[], n = 1) {
+    const _n = n <= 0 ? 0 : arr.length - n;
+    if (n >= arr.length) return []
+    return arr.slice(0, _n)
   }
 }
 
@@ -81,6 +88,7 @@ assert.ok(arrEqual(_.chunk([1, 2, 3, 4, 5], 2), [[1, 2], [3, 4], [5]]))
 assert(arrEqual(_.difference([1, 3, 9], [2, 4, 6, 1], [3]), [9]))
 assert(arrEqual(_.differenceBy([1.3, 2.2], [3.1, 2.4], (i: number) => ~i), [1.3]))
 assert(arrEqual(_.drop([1, 2]), [2]))
-
+assert(arrEqual(_.dropRight([1, 2]), [1]))
+assert(arrEqual(_.dropRight([1, 2, 3, 4, 5, 6, 7, 8, 9], 6), [1, 2, 3]))
 
 export default _;
