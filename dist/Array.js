@@ -93,6 +93,18 @@ const _ = {
                 return value;
             return e;
         });
+    },
+    findIndex(arr, filter, fromIndex = 0) {
+        if (fromIndex >= arr.length)
+            return -1;
+        if (fromIndex <= 0)
+            fromIndex = 0;
+        const _arr = arr.slice(fromIndex);
+        for (const item of _arr) {
+            if (filter(item))
+                return _arr.indexOf(item);
+        }
+        return -1;
     }
 };
 assert_1.default.ok(arrEqual([1, 2], [2, 1]));
@@ -105,4 +117,6 @@ assert_1.default(arrEqual(_.dropRight([1, 2]), [1]));
 assert_1.default(arrEqual(_.dropRight([1, 2, 3, 4, 5, 6, 7, 8, 9], 6), [1, 2, 3]));
 assert_1.default(arrEqual(_.fill([1, 2, 3, 4, 5], '*', 0, 2), ['*', '*', 3, 4, 5]));
 assert_1.default(arrEqual(_.fill([1, 2, 3], '*'), ['*', '*', '*']));
+assert_1.default(_.findIndex([1, 2, 3, 4], (i) => i % 3 === 0) === 2);
+assert_1.default(_.findIndex([1, 2, 3, 4], (i) => i % 5 === 0) === 2);
 exports.default = _;

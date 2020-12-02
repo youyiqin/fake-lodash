@@ -87,6 +87,15 @@ const _ = {
       if (i >= start && i < end) return value;
       return e;
     })
+  },
+  findIndex(arr: any[], filter: Function, fromIndex = 0) {
+    if (fromIndex >= arr.length) return -1
+    if (fromIndex <= 0) fromIndex = 0;
+    const _arr = arr.slice(fromIndex)
+    for (const item of _arr) {
+      if (filter(item)) return _arr.indexOf(item)
+    }
+    return -1
   }
 }
 
@@ -100,5 +109,6 @@ assert(arrEqual(_.dropRight([1, 2]), [1]))
 assert(arrEqual(_.dropRight([1, 2, 3, 4, 5, 6, 7, 8, 9], 6), [1, 2, 3]))
 assert(arrEqual(_.fill([1, 2, 3, 4, 5], '*', 0, 2), ['*', '*', 3, 4, 5]))
 assert(arrEqual(_.fill([1, 2, 3], '*'), ['*', '*', '*']))
+assert(_.findIndex([1, 2, 3, 4], (i: any) => i % 3 === 0) === 2)
 
 export default _;
