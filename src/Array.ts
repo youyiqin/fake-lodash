@@ -1,5 +1,5 @@
 import assert from 'assert';
-type _Arr = (string | number | (string | number)[])[]
+type _Arr = (string | number | any[])[]
 
 const arrEqual = (arr1: _Arr, arr2: _Arr): boolean => {
   // 用默认排序算法排序,如果数组内容一致,则下标对应的内容可以进行相等性比较
@@ -105,6 +105,36 @@ const _ = {
       _fromIndex -= 1
     } while (_fromIndex >= 0);
     return -1
+  },
+  head(arr: any[]) {
+    return arr.length === 0 ? undefined : arr[0];
+  },
+  flatten(arr: any[]) {
+    if (arr.length <= 1) return [...arr]
+    return arr.reduce((prev, curr) => prev.concat(curr), [])
+  },
+  flattenDeep(arr: any[]) {
+    if (arr.length === 0) return []
+    let _arr = [...arr]
+    if (_arr.every(i => !Array.isArray(i))) return _arr
+    do {
+      _arr = this.flatten(_arr)
+    } while (_arr.some(i => Array.isArray(i)));
+    return _arr
+  },
+  flattenDepth(arr: any[], depth = 1) {
+    if (depth <= 0 || depth !== ~~depth) {
+      console.log('error: depth value');
+      throw new Error("Invalid depth value.")
+    }
+    let _arr = [...arr];
+    let count = 1
+    if (_arr.length === 0 || _arr.every(i => !Array.isArray(i))) return _arr;
+    do {
+      _arr = this.flatten(_arr)
+      count += 1;
+    } while (count <= depth && _arr.some(i => Array.isArray(i))); // 关键条件
+    return _arr;
   }
 }
 
@@ -123,5 +153,13 @@ assert(_.findIndex([1, 2, 3, 4], (i: any) => i % 5 === 0) === -1)
 assert(_.findLastIndex([1, 2, 3, 4, 5], (i: any) => i % 5 === 0 ? true : false) === 4)
 assert(_.findLastIndex([1, 2, 3, 4, 5], (i: any) => i % 6 === 0 ? true : false) === -1)
 assert(_.findLastIndex([1, 2, 3, 4, 5], (i: any) => i % 2 === 0 ? true : false) === 3)
+assert(_.head([2, 3]) === 2)
+assert(_.head([]) === undefined)
+assert(arrEqual(_.flatten([1, [2, 3, 4], 5]), [1, 2, 3, 4, 5]))
+assert(arrEqual(_.flatten([1, [2, [3, 4]], 5]), [1, 2, [3, 4], 5]))
+assert(arrEqual(_.flattenDeep([1, [2, [3, [4, 5], [6, 7]]]]), [1, 2, 3, 4, 5, 6, 7]))
+assert(arrEqual(_.flattenDepth([1, [2, [3], 5]]), [1, 2, [3], 5]))
+assert(arrEqual(_.flattenDepth([1, [2, [3, [4, [999]]], 5]], 3), [1, 2, 3, 4, [999], 5]))
+
 
 export default _;

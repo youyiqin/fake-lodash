@@ -116,6 +116,42 @@ const _ = {
             _fromIndex -= 1;
         } while (_fromIndex >= 0);
         return -1;
+    },
+    head(arr) {
+        return arr.length === 0 ? undefined : arr[0];
+    },
+    flatten(arr) {
+        if (arr.length <= 1)
+            return [...arr];
+        return arr.reduce((prev, curr) => prev.concat(curr), []);
+    },
+    flattenDeep(arr) {
+        if (arr.length === 0)
+            return [];
+        let _arr = [...arr];
+        if (_arr.every(i => !Array.isArray(i)))
+            return _arr;
+        do {
+            _arr = this.flatten(_arr);
+        } while (_arr.some(i => Array.isArray(i)));
+        return _arr;
+    },
+    flattenDepth(arr, depth = 1) {
+        if (depth <= 0 || depth !== ~~depth) {
+            console.log('error: depth value');
+            throw new Error("Invalid depth value.");
+        }
+        let _arr = [...arr];
+        let count = 1;
+        if (_arr.length === 0 || _arr.every(i => !Array.isArray(i)))
+            return _arr;
+        do {
+            console.log('之前', _arr);
+            _arr = this.flatten(_arr);
+            count += 1;
+            console.log('之后', _arr, count);
+        } while (count <= depth && _arr.some(i => Array.isArray(i)));
+        return _arr;
     }
 };
 assert_1.default.ok(arrEqual([1, 2], [2, 1]));
@@ -133,4 +169,11 @@ assert_1.default(_.findIndex([1, 2, 3, 4], (i) => i % 5 === 0) === -1);
 assert_1.default(_.findLastIndex([1, 2, 3, 4, 5], (i) => i % 5 === 0 ? true : false) === 4);
 assert_1.default(_.findLastIndex([1, 2, 3, 4, 5], (i) => i % 6 === 0 ? true : false) === -1);
 assert_1.default(_.findLastIndex([1, 2, 3, 4, 5], (i) => i % 2 === 0 ? true : false) === 3);
+assert_1.default(_.head([2, 3]) === 2);
+assert_1.default(_.head([]) === undefined);
+assert_1.default(arrEqual(_.flatten([1, [2, 3, 4], 5]), [1, 2, 3, 4, 5]));
+assert_1.default(arrEqual(_.flatten([1, [2, [3, 4]], 5]), [1, 2, [3, 4], 5]));
+assert_1.default(arrEqual(_.flattenDeep([1, [2, [3, [4, 5], [6, 7]]]]), [1, 2, 3, 4, 5, 6, 7]));
+assert_1.default(arrEqual(_.flattenDepth([1, [2, [3], 5]]), [1, 2, [3], 5]));
+assert_1.default(arrEqual(_.flattenDepth([1, [2, [3, [4, [999]]], 5]], 3), [1, 2, 3, 4, [999], 5]));
 exports.default = _;
