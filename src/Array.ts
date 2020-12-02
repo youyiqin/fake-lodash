@@ -96,6 +96,15 @@ const _ = {
       if (filter(item)) return _arr.indexOf(item)
     }
     return -1
+  },
+  findLastIndex(arr: Array<any>, filter: Function, fromIndex = arr.length - 1) {
+    let _fromIndex = fromIndex >= arr.length ? arr.length - 1 : fromIndex
+    if (fromIndex < 0) return -1
+    do {
+      if (filter(arr[_fromIndex])) return _fromIndex
+      _fromIndex -= 1
+    } while (_fromIndex >= 0);
+    return -1
   }
 }
 
@@ -110,5 +119,9 @@ assert(arrEqual(_.dropRight([1, 2, 3, 4, 5, 6, 7, 8, 9], 6), [1, 2, 3]))
 assert(arrEqual(_.fill([1, 2, 3, 4, 5], '*', 0, 2), ['*', '*', 3, 4, 5]))
 assert(arrEqual(_.fill([1, 2, 3], '*'), ['*', '*', '*']))
 assert(_.findIndex([1, 2, 3, 4], (i: any) => i % 3 === 0) === 2)
+assert(_.findIndex([1, 2, 3, 4], (i: any) => i % 5 === 0) === -1)
+assert(_.findLastIndex([1, 2, 3, 4, 5], (i: any) => i % 5 === 0 ? true : false) === 4)
+assert(_.findLastIndex([1, 2, 3, 4, 5], (i: any) => i % 6 === 0 ? true : false) === -1)
+assert(_.findLastIndex([1, 2, 3, 4, 5], (i: any) => i % 2 === 0 ? true : false) === 3)
 
 export default _;

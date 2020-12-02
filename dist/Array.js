@@ -105,6 +105,17 @@ const _ = {
                 return _arr.indexOf(item);
         }
         return -1;
+    },
+    findLastIndex(arr, filter, fromIndex = arr.length - 1) {
+        let _fromIndex = fromIndex >= arr.length ? arr.length - 1 : fromIndex;
+        if (fromIndex < 0)
+            return -1;
+        do {
+            if (filter(arr[_fromIndex]))
+                return _fromIndex;
+            _fromIndex -= 1;
+        } while (_fromIndex >= 0);
+        return -1;
     }
 };
 assert_1.default.ok(arrEqual([1, 2], [2, 1]));
@@ -118,5 +129,8 @@ assert_1.default(arrEqual(_.dropRight([1, 2, 3, 4, 5, 6, 7, 8, 9], 6), [1, 2, 3]
 assert_1.default(arrEqual(_.fill([1, 2, 3, 4, 5], '*', 0, 2), ['*', '*', 3, 4, 5]));
 assert_1.default(arrEqual(_.fill([1, 2, 3], '*'), ['*', '*', '*']));
 assert_1.default(_.findIndex([1, 2, 3, 4], (i) => i % 3 === 0) === 2);
-assert_1.default(_.findIndex([1, 2, 3, 4], (i) => i % 5 === 0) === 2);
+assert_1.default(_.findIndex([1, 2, 3, 4], (i) => i % 5 === 0) === -1);
+assert_1.default(_.findLastIndex([1, 2, 3, 4, 5], (i) => i % 5 === 0 ? true : false) === 4);
+assert_1.default(_.findLastIndex([1, 2, 3, 4, 5], (i) => i % 6 === 0 ? true : false) === -1);
+assert_1.default(_.findLastIndex([1, 2, 3, 4, 5], (i) => i % 2 === 0 ? true : false) === 3);
 exports.default = _;
