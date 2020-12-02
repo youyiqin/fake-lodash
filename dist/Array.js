@@ -82,6 +82,17 @@ const _ = {
         if (n >= arr.length)
             return [];
         return arr.slice(0, _n);
+    },
+    fill(arr, value, start = 0, end = arr.length) {
+        if (start < 0)
+            start = 0;
+        if (end > arr.length)
+            end = arr.length;
+        return arr.map((e, i) => {
+            if (i >= start && i < end)
+                return value;
+            return e;
+        });
     }
 };
 assert_1.default.ok(arrEqual([1, 2], [2, 1]));
@@ -92,4 +103,6 @@ assert_1.default(arrEqual(_.differenceBy([1.3, 2.2], [3.1, 2.4], (i) => ~i), [1.
 assert_1.default(arrEqual(_.drop([1, 2]), [2]));
 assert_1.default(arrEqual(_.dropRight([1, 2]), [1]));
 assert_1.default(arrEqual(_.dropRight([1, 2, 3, 4, 5, 6, 7, 8, 9], 6), [1, 2, 3]));
+assert_1.default(arrEqual(_.fill([1, 2, 3, 4, 5], '*', 0, 2), ['*', '*', 3, 4, 5]));
+assert_1.default(arrEqual(_.fill([1, 2, 3], '*'), ['*', '*', '*']));
 exports.default = _;
