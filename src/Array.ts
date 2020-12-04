@@ -155,6 +155,16 @@ const _ = {
       result[pair[0]] = pair[1];
     }
     return result;
+  },
+  initial(arr: any[]): any[] {
+    return arr.slice(0, arr.length - 1);
+  },
+  intersection(...arr: any[][]) {
+    if (arr.length === 0) return []
+    return arr[0].map(item => {
+      if (arr.slice(1).every(i => i.includes(item))) return item
+      return undefined
+    }).filter(i => !!i)
   }
 }
 
@@ -181,6 +191,10 @@ assert(arrEqual(_.flattenDeep([1, [2, [3, [4, 5], [6, 7]]]]), [1, 2, 3, 4, 5, 6,
 assert(arrEqual(_.flattenDepth([1, [2, [3], 5]]), [1, 2, [3], 5]))
 assert(arrEqual(_.flattenDepth([1, [2, [3, [4, [999]]], 5]], 3), [1, 2, 3, 4, [999], 5]))
 assert(objEqual(_.fromPairs([['name', 'youyi'], ['age', 18]]), { name: 'youyi', age: 18 }))
+assert(arrEqual(_.intersection([2, 1], [4, 2], [1, 2]), [2]))
+
+
+
 
 
 export default _;
