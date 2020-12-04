@@ -16,6 +16,16 @@ const arrEqual = (arr1: _Arr, arr2: _Arr): boolean => {
   })
 }
 
+const objEqual = (obj1: any, obj2: any): boolean => {
+  for (const key in obj1) {
+    if (obj1[key] !== obj2[key]) return false
+  }
+  for (const key in obj2) {
+    if (obj1[key] !== obj2[key]) return false
+  }
+  return true;
+}
+
 const _ = {
   chunk(array: Array<any>, size = 1) {
     const _size = ~~size
@@ -135,6 +145,16 @@ const _ = {
       count += 1;
     } while (count <= depth && _arr.some(i => Array.isArray(i))); // 关键条件
     return _arr;
+  },
+  fromPairs(arr: any[][]): object {
+    let index = -1;
+    let length = arr.length;
+    let result: any = {};
+    while (++index < length) {
+      let pair = arr[index];
+      result[pair[0]] = pair[1];
+    }
+    return result;
   }
 }
 
@@ -160,6 +180,7 @@ assert(arrEqual(_.flatten([1, [2, [3, 4]], 5]), [1, 2, [3, 4], 5]))
 assert(arrEqual(_.flattenDeep([1, [2, [3, [4, 5], [6, 7]]]]), [1, 2, 3, 4, 5, 6, 7]))
 assert(arrEqual(_.flattenDepth([1, [2, [3], 5]]), [1, 2, [3], 5]))
 assert(arrEqual(_.flattenDepth([1, [2, [3, [4, [999]]], 5]], 3), [1, 2, 3, 4, [999], 5]))
+assert(objEqual(_.fromPairs([['name', 'youyi'], ['age', 18]]), { name: 'youyi', age: 18 }))
 
 
 export default _;

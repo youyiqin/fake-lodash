@@ -17,6 +17,17 @@ const arrEqual = (arr1, arr2) => {
         }
     });
 };
+const objEqual = (obj1, obj2) => {
+    for (const key in obj1) {
+        if (obj1[key] !== obj2[key])
+            return false;
+    }
+    for (const key in obj2) {
+        if (obj1[key] !== obj2[key])
+            return false;
+    }
+    return true;
+};
 const _ = {
     chunk(array, size = 1) {
         const _size = ~~size;
@@ -146,12 +157,20 @@ const _ = {
         if (_arr.length === 0 || _arr.every(i => !Array.isArray(i)))
             return _arr;
         do {
-            console.log('之前', _arr);
             _arr = this.flatten(_arr);
             count += 1;
-            console.log('之后', _arr, count);
         } while (count <= depth && _arr.some(i => Array.isArray(i)));
         return _arr;
+    },
+    fromPairs(arr) {
+        let index = -1;
+        let length = arr.length;
+        let result = {};
+        while (++index < length) {
+            let pair = arr[index];
+            result[pair[0]] = pair[1];
+        }
+        return result;
     }
 };
 assert_1.default.ok(arrEqual([1, 2], [2, 1]));
@@ -176,4 +195,6 @@ assert_1.default(arrEqual(_.flatten([1, [2, [3, 4]], 5]), [1, 2, [3, 4], 5]));
 assert_1.default(arrEqual(_.flattenDeep([1, [2, [3, [4, 5], [6, 7]]]]), [1, 2, 3, 4, 5, 6, 7]));
 assert_1.default(arrEqual(_.flattenDepth([1, [2, [3], 5]]), [1, 2, [3], 5]));
 assert_1.default(arrEqual(_.flattenDepth([1, [2, [3, [4, [999]]], 5]], 3), [1, 2, 3, 4, [999], 5]));
+assert_1.default(objEqual(_.fromPairs([['name', 'youyi'], ['age', 18]]), { name: 'youyi', age: 18 }));
+console.log(_.fromPairs([['name', 'youyi'], ['age', 18]]));
 exports.default = _;
