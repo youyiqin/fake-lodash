@@ -165,6 +165,13 @@ const _ = {
       if (arr.slice(1).every(i => i.includes(item))) return item
       return undefined
     }).filter(i => !!i)
+  },
+  last<T>(arr: T[]): T | undefined {
+    if (arr.length === 0) return undefined
+    return arr[arr.length - 1]
+  },
+  pull(arr: any[], ...values: any[]): any[] {
+    return arr.filter(value => !values.includes(value))
   }
 }
 
@@ -192,7 +199,7 @@ assert(arrEqual(_.flattenDepth([1, [2, [3], 5]]), [1, 2, [3], 5]))
 assert(arrEqual(_.flattenDepth([1, [2, [3, [4, [999]]], 5]], 3), [1, 2, 3, 4, [999], 5]))
 assert(objEqual(_.fromPairs([['name', 'youyi'], ['age', 18]]), { name: 'youyi', age: 18 }))
 assert(arrEqual(_.intersection([2, 1], [4, 2], [1, 2]), [2]))
-
+assert(arrEqual(_.pull([1, 2, 3], 2, 3), [1]))
 
 
 

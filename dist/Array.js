@@ -183,6 +183,14 @@ const _ = {
                 return item;
             return undefined;
         }).filter(i => !!i);
+    },
+    last(arr) {
+        if (arr.length === 0)
+            return undefined;
+        return arr[arr.length - 1];
+    },
+    pull(arr, ...values) {
+        return arr.filter(value => !values.includes(value));
     }
 };
 assert_1.default.ok(arrEqual([1, 2], [2, 1]));
@@ -209,5 +217,5 @@ assert_1.default(arrEqual(_.flattenDepth([1, [2, [3], 5]]), [1, 2, [3], 5]));
 assert_1.default(arrEqual(_.flattenDepth([1, [2, [3, [4, [999]]], 5]], 3), [1, 2, 3, 4, [999], 5]));
 assert_1.default(objEqual(_.fromPairs([['name', 'youyi'], ['age', 18]]), { name: 'youyi', age: 18 }));
 assert_1.default(arrEqual(_.intersection([2, 1], [4, 2], [1, 2]), [2]));
-console.log(_.intersection([2, 1], [4, 2], [1, 2]));
+assert_1.default(arrEqual(_.pull([1, 2, 3], 2, 3), [1]));
 exports.default = _;
